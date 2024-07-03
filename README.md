@@ -1,6 +1,12 @@
+<div align="center">
+
+<img width="250" alt="Quran" src="https://raw.githubusercontent.com/7Eltantawy/Xlsx2Sqlite/main/media/icon.png">
+
 # Xlsx2Sqlite
 
 Map xlsx files to database table convert
+
+<div align="left">
 
 ## How to use?
 

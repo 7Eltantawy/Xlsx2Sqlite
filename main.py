@@ -1,4 +1,5 @@
 import json
+import os  # Import os module for path manipulation
 import sqlite3
 import sys
 
@@ -44,9 +45,9 @@ def insert_data(cursor, table_name, columns, data):
     sql = f'INSERT INTO "{table_name}" ({", ".join(db_columns)}) VALUES ({placeholders})'
     cursor.executemany(sql, data)
 
-def map_xlsx_to_db(config):
-    xlsx_file_path = config['info']['csvFilePath']
-    db_file_path = config['info']['dbFilePath']
+def map_xlsx_to_db(config, base_path):
+    xlsx_file_path = os.path.join(base_path, config['info']['csvFilePath'])
+    db_file_path = os.path.join(base_path, config['info']['dbFilePath'])
     
     # Connect to SQLite DB
     conn = sqlite3.connect(db_file_path)
@@ -89,12 +90,17 @@ def map_xlsx_to_db(config):
 
 if __name__ == '__main__':
     try:
+        # Check if a configuration path is passed as an argument
         if len(sys.argv) > 1:
             config_path = sys.argv[1]
         else:
             raise ValueError("No configuration file path provided. Usage: python main.py <config_file_path>")
         
+        # Resolve the base path for relative paths
+        base_path = os.path.dirname(os.path.abspath(config_path))
+        
+        # Read config and map XLSX to DB
         config = read_config(config_path)
-        map_xlsx_to_db(config)
+        map_xlsx_to_db(config, base_path)
     except Exception as e:
         print(f"An error occurred: {str(e)}")

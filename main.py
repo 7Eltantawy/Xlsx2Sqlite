@@ -1,7 +1,10 @@
 import json
 import sqlite3
+import sys
+
 import pandas as pd
 from tqdm import tqdm
+
 
 def read_config(config_path):
     with open(config_path, 'r', encoding='utf-8') as f:
@@ -86,7 +89,11 @@ def map_xlsx_to_db(config):
 
 if __name__ == '__main__':
     try:
-        config_path = 'config.json'
+        if len(sys.argv) > 1:
+            config_path = sys.argv[1]
+        else:
+            raise ValueError("No configuration file path provided. Usage: python main.py <config_file_path>")
+        
         config = read_config(config_path)
         map_xlsx_to_db(config)
     except Exception as e:

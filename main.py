@@ -1,5 +1,5 @@
 import json
-import os  # Import os module for path manipulation
+import os
 import sqlite3
 import sys
 
@@ -48,6 +48,10 @@ def insert_data(cursor, table_name, columns, data):
 def map_xlsx_to_db(config, base_path):
     xlsx_file_path = os.path.join(base_path, config['info']['csvFilePath'])
     db_file_path = os.path.join(base_path, config['info']['dbFilePath'])
+    
+    # Delete the database file if it exists
+    if os.path.exists(db_file_path):
+        os.remove(db_file_path)
     
     # Connect to SQLite DB
     conn = sqlite3.connect(db_file_path)
